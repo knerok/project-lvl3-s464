@@ -12,17 +12,20 @@ const generateGreeting = () => {
     articles: [],
   };
 
-  const inputElement = document.getElementById('inputRssFlow');
-  inputElement.addEventListener('input', ({ target }) => {
+  const inputRssElement = document.getElementById('inputRssFlow');
+  inputRssElement.addEventListener('input', (e) => {
+    e.preventDefault();
+    const { target } = e;
     const { value } = target;
     state.currentValue = value;
-    console.log(value);
     state.formStatus = ((validator.isURL(value) && (state.rssFlows.filter(rssFlow => rssFlow.url === state.currentValue).length === 0)) === true) ? 'valid' : 'invalid';
-    console.log(state.formStatus);
   });
 
   const submitBotton = document.getElementById('submitBotton');
-  submitBotton.addEventListener('click', ({ target }) => {
+  const inputRssForm = document.getElementById('form');
+  inputRssForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const { target } = e;
     if (state.formStatus === 'invalid') {
       return;
     }
@@ -65,21 +68,22 @@ const generateGreeting = () => {
   };
 
   const renderForm = ({ formStatus }) => {
-    const inputElement = document.getElementById('inputRssFlow');
+    const innputRssForm = document.getElementById('form');
+    const inputRssElement = document.getElementById('inputRssFlow');
     const submitBotton = document.getElementById('submitBotton');
     const notificationSection = document.querySelector('.notification');
     switch (formStatus) {
       case ('invalid'): {
         notificationSection.innerHTML = '';
-        inputElement.classList.remove('is-valid');
-        inputElement.classList.add('is-invalid');
+        inputRssElement.classList.remove('is-valid');
+        inputRssElement.classList.add('is-invalid');
         submitBotton.disabled = true;
         break;
       }
       case ('valid'): {
         notificationSection.innerHTML = '';
-        inputElement.classList.remove('is-invalid');
-        inputElement.classList.add('is-valid');
+        inputRssElement.classList.remove('is-invalid');
+        inputRssElement.classList.add('is-valid');
         submitBotton.disabled = false;
         break;
       }
@@ -89,6 +93,7 @@ const generateGreeting = () => {
         break;
       }
       case ('loaded'): {
+        inputRssForm.reset();
         submitBotton.disabled = false;
         submitBotton.textContent = 'Добавить RSS';
         break;
@@ -96,8 +101,8 @@ const generateGreeting = () => {
       case ('error'): {
         submitBotton.disabled = true;
         submitBotton.textContent = 'Добавить RSS';
-        inputElement.classList.remove('is-valid');
-        inputElement.classList.add('is-invalid');
+        inputRssElement.classList.remove('is-valid');
+        inputRssElement.classList.add('is-invalid');
         notificationSection.innerHTML = `<div class="alert alert-warning alert-dismissible fade show my-0" role="alert">
           <strong>Error!</strong> Wrong URL.
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
