@@ -54,11 +54,9 @@ const app = () => {
     rssFlows.map((rssFlow) => {
       const url = `https://cors-anywhere.herokuapp.com/${rssFlow.url}`;
       axios.get(url).then((response) => {
-        const parser = new DOMParser();
-        const data = parser.parseFromString(response.data, 'application/xml');
-        const newArticles = [...data.querySelectorAll('item')];
-        const newArticlesForList = newArticles.map(article => ({ title: article.querySelector('title').textContent, link: article.querySelector('link').textContent, description: article.querySelector('description').textContent }));
+        const newArticlesForList = parseRss(response.data).articlesForList;
         state.articles = uniqBy(el => el.link)([...articles, ...newArticlesForList]);
+        console.log(state.articles);
       });
       return rssFlow;
     });
