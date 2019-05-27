@@ -1,13 +1,19 @@
 export const renderNewRssFlow = ({ rssFlows }) => {
-  const table = document.getElementById('table');
-  const s = '<tr><th>№</th><th>Title</th><th>Description</th></tr>';
-  const newRssList = rssFlows.reduce((acc, el, i) => `${acc}<tr><td>${i + 1}</td><td>${el.title}</td><td>${el.description}</td></tr>`, s);
-  table.innerHTML = newRssList;
+  const htmlRssFlows = document.querySelector('.rssFlows');
+  const htmlBlock = `
+  <h2 class="display-4 text-center lead mt-1 mb-5">RSS Flows</h2>
+  <table class="table" id="table">
+    <tr><th>№</th><th>Title</th><th>Description</th></tr>`;
+  const newHtmlRssFlows = rssFlows.reduce((acc, rssFlow, i) => `${acc}<tr><td>${i + 1}</td><td>${rssFlow.title}</td><td>${rssFlow.description}</td></tr>`, htmlBlock);
+  htmlRssFlows.innerHTML = `${newHtmlRssFlows}</table>`;
 };
 
 export const renderNewArticles = ({ articles }) => {
-  const ul = document.getElementById('list');
-  const newTable = articles.reduce((acc, el, i) => `${acc
+  const htmlArticles = document.querySelector('.articles');
+  const htmlBlock = `
+  <h2 class="display-4 text-center lead mt-1 mb-5">Articles</h2>
+  <ul class="list-group" id="list">`;
+  const newHtmlArticles = articles.reduce((acc, el, i) => `${acc
   }<li class="list-group-item list-group-item-success">
          <div class="row">
            <div class="col">
@@ -35,8 +41,8 @@ export const renderNewArticles = ({ articles }) => {
              </div>
            </div>
          </div>
-       </li>`, '');
-  ul.innerHTML = newTable;
+       </li>`, htmlBlock);
+  htmlArticles.innerHTML = `${newHtmlArticles}</ul>`;
 };
 
 export const renderForm = ({ formStatus }) => {

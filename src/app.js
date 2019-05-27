@@ -56,7 +56,6 @@ const app = () => {
       axios.get(url).then((response) => {
         const newArticlesForList = parseRss(response.data).articlesForList;
         state.articles = uniqBy(el => el.link)([...articles, ...newArticlesForList]);
-        console.log(state.articles);
       });
       return rssFlow;
     });
